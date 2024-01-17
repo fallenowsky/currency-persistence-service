@@ -8,13 +8,11 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Getter
-@Setter
 @Data
 @Entity
 public class CurrencyRate {
-    @Id
     private String currency;
+    @Id
     private String code;
     private BigDecimal bid;
     private BigDecimal ask;

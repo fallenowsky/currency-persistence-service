@@ -13,13 +13,14 @@ public class CurrencyService {
 
     @Transactional
     public void saveExchangeRate(CurrencyRate rate) {
-        CurrencyRate currency = repository.findByCode(rate.getCode());
-        if (currency == null) {
-            repository.save(rate);
-        }
-        else {
-            currency.setBid(rate.getBid());
-            currency.setAsk(rate.getAsk());
-        }
+//        CurrencyRate currency = repository.findByCode(rate.getCode());
+//        if (currency == null) {
+//            repository.save(rate);
+//        }
+//        else {
+//            currency.setBid(rate.getBid());
+//            currency.setAsk(rate.getAsk());
+//        }
+        repository.save(rate);
     }
 }
