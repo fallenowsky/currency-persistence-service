@@ -1,8 +1,9 @@
 package pl.kurs.currencypersistanceservice.service;
 
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.kurs.currencypersistanceservice.model.CurrencyRate;
 import pl.kurs.currencypersistanceservice.repository.CurrencyRateRepository;
 
