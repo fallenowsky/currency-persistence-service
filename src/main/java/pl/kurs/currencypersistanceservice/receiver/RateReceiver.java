@@ -19,8 +19,7 @@ public class RateReceiver {
 
     @RabbitListener(queues = "rate")
     public void fetchCurrencyRates(CreateCurrencyRateCommand command) {
-        CurrencyRate currencyRate = currencyRateMapper.toEntity(command);
-        service.saveExchangeRate(currencyRate);
-        log.info("processed: {}", currencyRate);
+        service.saveExchangeRate(command);
+        log.info("processed: {}", command);
     }
 }
