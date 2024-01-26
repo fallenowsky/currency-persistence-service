@@ -5,35 +5,45 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.kurs.currencypersistanceservice.mapper.CurrencyRateMapper;
 import pl.kurs.currencypersistanceservice.model.CurrencyRate;
 import pl.kurs.currencypersistanceservice.model.command.CreateCurrencyRateCommand;
 import pl.kurs.currencypersistanceservice.repository.CurrencyRateRepository;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class CurrencyServiceTest {
-//todo testy @testCointeier
-    @Mock
-    private CurrencyRateRepository currencyRateRepository;
+class CurrencyServiceTest {//todo testy @testCointeier
 
-    @InjectMocks
+    @Mock
+    private CurrencyRateRepository currencyRepository;
+
     private CurrencyService currencyService;
 
-    private CreateCurrencyRateCommand sampleCurrencyRate;
+    private CreateCurrencyRateCommand command;
 
     @Captor
     private ArgumentCaptor<CurrencyRate> currencyRateArgumentCaptor;
 
+    private CurrencyRate rate;
+
     @BeforeEach
     void setUp() {
-        sampleCurrencyRate = CreateCurrencyRateCommand.builder()
+        currencyService = new CurrencyService(currencyRepository, new CurrencyRateMapper());
+        rate = CurrencyRate.builder()
+                .currency("USD")
+                .code("USD")
+                .ask(BigDecimal.valueOf(3.75))
+                .bid(BigDecimal.valueOf(3.80))
+                .build();
+        command = CreateCurrencyRateCommand.builder()
                 .currency("USD")
                 .code("USD")
                 .ask(BigDecimal.valueOf(3.75))
@@ -41,19 +51,34 @@ class CurrencyServiceTest {
                 .build();
     }
 
-//    @Test
-//    public void testSaveExchangeRate_MethodCall() {
-//
-//    currencyService.saveExchangeRate(sampleCurrencyRate);
-//
-//    verify(currencyRateRepository).save(currencyRateArgumentCaptor.capture());
-//    CurrencyRate saved = currencyRateArgumentCaptor.getValue();
-//    assertEquals(saved.getCurrency(),sampleCurrencyRate.getCurrency());
-//    assertEquals(saved.getCode(),sampleCurrencyRate.getCode());
-//    assertEquals(saved.getAsk(),sampleCurrencyRate.getAsk());
-//    assertEquals(saved.getBid(),sampleCurrencyRate.getBid());
-////    verify(currencyRateRepository).save(sampleCurrencyRate);
-//    verifyNoMoreInteractions(currencyRateRepository);
-//    }
+
+    @Test
+    public void testSaveExchangeRate_ResultsInCaptor() {
+        when(currencyRepository.save(any(CurrencyRate.class))).thenReturn(rate);
+
+        currencyService.saveExchangeRate(command);
+
+        verify(currencyRepository).save(currencyRateArgumentCaptor.capture());
+        CurrencyRate saved = currencyRateArgumentCaptor.getValue();
+        assertEquals(saved, rate);
+        verifyNoMoreInteractions(currencyRepository);
+    }
+
+    @Test
+    public void testSaveExchangeRate_ResultsInMockInvocation() {
+        when(currencyRepository.save(any(CurrencyRate.class))).thenReturn(rate);
+
+        currencyService.saveExchangeRate(command);
+
+        verify(currencyRepository, times(1)).save(rate);
+        verifyNoMoreInteractions(currencyRepository);
+    }
+
+    @Test
+    public void testSaveExchangeRate_CommandNull_ResultsInNullPointerException() {
+
+        assertThatExceptionOfType(NullPointerException.class)
+                .isThrownBy(() -> currencyService.saveExchangeRate(null));
+    }
 
 }
