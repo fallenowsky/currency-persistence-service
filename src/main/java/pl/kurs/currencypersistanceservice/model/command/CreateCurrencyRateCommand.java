@@ -10,10 +10,7 @@ import java.math.BigDecimal;
 public class CreateCurrencyRateCommand {
 
     private String currency;
-
     private String code;
-
     private BigDecimal bid;
-
     private BigDecimal ask;
 }

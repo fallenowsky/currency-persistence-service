@@ -6,6 +6,7 @@ import pl.kurs.currencypersistanceservice.model.command.CreateCurrencyRateComman
 
 @Component
 public class CurrencyRateMapper {
+
     public CurrencyRate toEntity(CreateCurrencyRateCommand command) {
         return CurrencyRate.builder()
                 .currency(command.getCurrency())

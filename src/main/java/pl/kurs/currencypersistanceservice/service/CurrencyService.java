@@ -12,11 +12,12 @@ import pl.kurs.currencypersistanceservice.repository.CurrencyRateRepository;
 @RequiredArgsConstructor
 @Service
 public class CurrencyService {
+
     private final CurrencyRateRepository repository;
     private final CurrencyRateMapper currencyRateMapper;
 
+
     public void saveExchangeRate(CreateCurrencyRateCommand command) {
-        CurrencyRate currencyRate = currencyRateMapper.toEntity(command);
-        repository.save(currencyRate);
+        repository.save(currencyRateMapper.toEntity(command));
     }
 }

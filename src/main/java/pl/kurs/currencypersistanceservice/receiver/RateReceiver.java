@@ -15,11 +15,10 @@ import pl.kurs.currencypersistanceservice.service.CurrencyService;
 @RequiredArgsConstructor
 public class RateReceiver {
     private final CurrencyService service;
-    private final CurrencyRateMapper currencyRateMapper;
+
 
     @RabbitListener(queues = "rate")
     public void fetchCurrencyRates(CreateCurrencyRateCommand command) {
         service.saveExchangeRate(command);
-        log.info("processed: {}", command);
     }
 }
