@@ -1,7 +1,7 @@
 package pl.kurs.currencypersistanceservice.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import pl.kurs.currencypersistanceservice.model.CurrencyRate;
 
-public interface CurrencyRateRepository extends MongoRepository<CurrencyRate, Integer> {
+public interface CurrencyRateRepository extends JpaRepository<CurrencyRate, Integer> {
 }

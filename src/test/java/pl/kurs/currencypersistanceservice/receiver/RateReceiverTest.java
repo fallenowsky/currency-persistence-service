@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.RabbitMQContainer;
@@ -75,6 +74,6 @@ class RateReceiverTest {
         await()
                 .atMost(Duration.of(200, ChronoUnit.MILLIS))
                 .untilAsserted(() -> verify(service, times(5))
-                        .saveExchangeRate(any(CreateCurrencyRateCommand.class)));
+                        .saveExchangeRate(rate));
     }
 }

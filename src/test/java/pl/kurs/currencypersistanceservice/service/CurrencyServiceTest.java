@@ -76,7 +76,6 @@ class CurrencyServiceTest {//todo testy @testCointeier
 
     @Test
     public void testSaveExchangeRate_CommandNull_ResultsInNullPointerException() {
-
         assertThatExceptionOfType(NullPointerException.class)
                 .isThrownBy(() -> currencyService.saveExchangeRate(null));
     }

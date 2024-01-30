@@ -2,10 +2,11 @@ server:
   port: 8082
 
 spring:
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/rates
-      database: rates
+  datasource:
+    url: jdbc:mysql://localhost:3309/rates
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   rabbitmq:
     host: localhost
@@ -14,5 +15,4 @@ spring:
     password: guest
 
 app:
-  queueName: rate
-  routingKey: ratesExchange
+  queueName: ratesQueue

@@ -1,19 +1,19 @@
 package pl.kurs.currencypersistanceservice.model;
 
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.TypeAlias;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 
-@Data
-@Document(collection = "rates")
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TypeAlias("currencyRate")
+@Entity
+@Table(name = "rates")
 public class CurrencyRate {
 
     @Id
