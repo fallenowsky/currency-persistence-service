@@ -50,7 +50,7 @@ class RateReceiverTest {
     @Container
     @ServiceConnection
     private static final RabbitMQContainer rabbitmq = new RabbitMQContainer(
-            DockerImageName.parse("rabbitmq:3.7.25-management-alpine"));
+            DockerImageName.parse("rabbitmq:3.9-management-alpine"));
 
 
     @BeforeEach

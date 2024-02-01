@@ -1,9 +1,12 @@
+
 spring:
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+  datasource:
+    url: jdbc:h2:mem:rates
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
 
 app:
   queueName: ratesQueue

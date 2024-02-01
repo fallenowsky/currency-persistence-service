@@ -14,13 +14,14 @@ import pl.kurs.currencypersistanceservice.repository.CurrencyRateRepository;
 
 import java.math.BigDecimal;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class CurrencyServiceTest {//todo testy @testCointeier
+class CurrencyServiceTest {
 
     @Mock
     private CurrencyRateRepository currencyRepository;
@@ -60,7 +61,7 @@ class CurrencyServiceTest {//todo testy @testCointeier
 
         verify(currencyRepository).save(currencyRateArgumentCaptor.capture());
         CurrencyRate saved = currencyRateArgumentCaptor.getValue();
-        assertEquals(saved, rate);
+        assertThat(saved).usingRecursiveComparison().isEqualTo(rate);
         verifyNoMoreInteractions(currencyRepository);
     }
 
@@ -70,7 +71,7 @@ class CurrencyServiceTest {//todo testy @testCointeier
 
         currencyService.saveExchangeRate(command);
 
-        verify(currencyRepository, times(1)).save(rate);
+        verify(currencyRepository, times(1)).save(any(CurrencyRate.class));
         verifyNoMoreInteractions(currencyRepository);
     }
 
