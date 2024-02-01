@@ -3,11 +3,14 @@ package pl.kurs.currencypersistanceservice.receiver;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.RabbitMQContainer;
@@ -21,14 +24,16 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @ActiveProfiles("test")
+@ExtendWith(OutputCaptureExtension.class)
 class RateReceiverTest {
 
     @Autowired
@@ -66,14 +71,22 @@ class RateReceiverTest {
     }
 
     @Test
-    public void testFetchCurrencyRates_HappyPath_ResultsInMockMethodsInvocations() {
+    public void testFetchCurrencyRates_HappyPath_ResultsInMockMethodsInvocations(CapturedOutput output) {
         for (int i = 0; i < 5; i++) {
             rabbitTemplate.convertAndSend(queueName, rate);
         }
 
         await()
-                .atMost(Duration.of(200, ChronoUnit.MILLIS))
+                .atMost(Duration.of(101, ChronoUnit.MILLIS))
                 .untilAsserted(() -> verify(service, times(5))
                         .saveExchangeRate(rate));
+
+        assertTrue(output.getErr().isEmpty());
+        assertThat(output.getOut()).contains(
+                "currency=EUR",
+                "code=EUR",
+                "bid=4.22",
+                "ask=4.22"
+        );
     }
 }
