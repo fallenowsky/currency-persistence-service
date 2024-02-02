@@ -11,12 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.containers.RabbitMQContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
+import pl.kurs.currencypersistanceservice.common.TestContainers;
 import pl.kurs.currencypersistanceservice.model.command.CreateCurrencyRateCommand;
 import pl.kurs.currencypersistanceservice.service.CurrencyService;
 
@@ -31,10 +27,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Testcontainers
 @ActiveProfiles("test")
 @ExtendWith(OutputCaptureExtension.class)
-class RateReceiverTest {
+class RateReceiverTest implements TestContainers {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
@@ -47,10 +42,6 @@ class RateReceiverTest {
     @Value("${app.queueName}")
     private String queueName;
 
-    @Container
-    @ServiceConnection
-    private static final RabbitMQContainer rabbitmq = new RabbitMQContainer(
-            DockerImageName.parse("rabbitmq:3.9-management-alpine"));
 
 
     @BeforeEach
