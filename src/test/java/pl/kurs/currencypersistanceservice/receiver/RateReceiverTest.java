@@ -56,9 +56,15 @@ class RateReceiverTest implements TestContainers {
 
 
     @Test
-    public void testConnectionEstablished() {
+    public void testConnectionEstablishedRabbit() {
         assertTrue(rabbitmq.isCreated());
         assertTrue(rabbitmq.isRunning());
+    }
+
+    @Test
+    public void testConnectionEstablishedPostgres() {
+        assertTrue(postgres.isCreated());
+        assertTrue(postgres.isRunning());
     }
 
     @Test
