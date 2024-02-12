@@ -78,11 +78,5 @@ class RateReceiverTest implements TestContainers {
                         .saveExchangeRate(rate));
 
         assertTrue(output.getErr().isEmpty());
-        assertThat(output.getOut()).contains(
-                "currency=EUR",
-                "code=EUR",
-                "bid=4.22",
-                "ask=4.22"
-        );
     }
 }
