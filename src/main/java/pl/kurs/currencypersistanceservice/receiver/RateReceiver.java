@@ -14,9 +14,8 @@ public class RateReceiver {
     private final CurrencyService service;
 
 
-    @RabbitListener(queues = "${app.queueName}")
+    @RabbitListener(queues = "${app.queue-name}")
     public void fetchCurrencyRates(CreateCurrencyRateCommand command) {
         service.saveExchangeRate(command);
-        System.out.println(command);
     }
 }

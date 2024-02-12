@@ -39,9 +39,8 @@ class RateReceiverTest implements TestContainers {
 
     private CreateCurrencyRateCommand rate;
 
-    @Value("${app.queueName}")
+    @Value("${app.queue-name}")
     private String queueName;
-
 
 
     @BeforeEach

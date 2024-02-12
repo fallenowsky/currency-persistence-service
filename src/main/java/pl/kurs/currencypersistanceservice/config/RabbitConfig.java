@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfig {
 
-    @Value("${app.queueName}")
+    @Value("${app.queue-name}")
     private String queueName;
 
 

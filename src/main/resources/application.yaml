@@ -19,4 +19,4 @@ spring:
     drop-first: true
 
 app:
-  queueName: ratesQueue
+  queue-name: rates_queue
