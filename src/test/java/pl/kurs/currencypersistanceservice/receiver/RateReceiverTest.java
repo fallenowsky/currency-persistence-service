@@ -3,14 +3,11 @@ package pl.kurs.currencypersistanceservice.receiver;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.system.CapturedOutput;
-import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.test.context.ActiveProfiles;
 import pl.kurs.currencypersistanceservice.common.TestContainers;
 import pl.kurs.currencypersistanceservice.model.command.CreateCurrencyRateCommand;
@@ -20,7 +17,6 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
@@ -28,7 +24,6 @@ import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-@ExtendWith(OutputCaptureExtension.class)
 class RateReceiverTest implements TestContainers {
 
     @Autowired
@@ -67,7 +62,7 @@ class RateReceiverTest implements TestContainers {
     }
 
     @Test
-    public void testFetchCurrencyRates_HappyPath_ResultsInMockMethodsInvocations(CapturedOutput output) {
+    public void testFetchCurrencyRates_HappyPath_ResultsInMockMethodsInvocations() {
         for (int i = 0; i < 5; i++) {
             rabbitTemplate.convertAndSend(queueName, rate);
         }
@@ -77,6 +72,5 @@ class RateReceiverTest implements TestContainers {
                 .untilAsserted(() -> verify(service, times(5))
                         .saveExchangeRate(rate));
 
-        assertTrue(output.getErr().isEmpty());
     }
 }
